@@ -6,20 +6,22 @@ package graphql
 import (
 	"context"
 	"fmt"
+
+	"github.com/jorgeAM/graphqlKata/internal/user"
 )
 
 // Login is the resolver for the login field.
-func (r *mutationResolver) Login(ctx context.Context, input LoginInput) (*User, error) {
+func (r *mutationResolver) Login(ctx context.Context, input LoginInput) (*user.User, error) {
 	panic(fmt.Errorf("not implemented: Login - login"))
 }
 
 // SignUp is the resolver for the signUp field.
-func (r *mutationResolver) SignUp(ctx context.Context, input SignUpInput) (*User, error) {
+func (r *mutationResolver) SignUp(ctx context.Context, input SignUpInput) (*user.User, error) {
 	panic(fmt.Errorf("not implemented: SignUp - signUp"))
 }
 
 // User is the resolver for the user field.
-func (r *queryResolver) User(ctx context.Context, id *string) (*User, error) {
+func (r *queryResolver) User(ctx context.Context, id *string) (*user.User, error) {
 	panic(fmt.Errorf("not implemented: User - user"))
 }
 
