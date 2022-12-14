@@ -5,8 +5,16 @@ type User {
   email: String!
 }
 
+type Todo {
+  id: ID!
+  text: String!
+  done: Boolean!
+  user: User!
+}
+
 type Query {
   user(id: ID!): User!
+  todos: [Todo]
 }
 
 input LoginInput {
@@ -21,7 +29,13 @@ input SignUpInput {
   password: String!
 }
 
+input CreateTodoInput {
+  text: String!
+  userId: String!
+}
+
 type Mutation {
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!
+  createTodo(input: CreateTodoInput!): User!
 }

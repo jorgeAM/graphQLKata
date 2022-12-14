@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/jorgeAM/graphqlKata/internal/platform/uuid"
+	"github.com/jorgeAM/graphqlKata/internal/todo"
 	"github.com/jorgeAM/graphqlKata/internal/user"
 )
 
@@ -35,9 +36,24 @@ func (r *mutationResolver) SignUp(ctx context.Context, input SignUpInput) (*user
 	return user, nil
 }
 
+// CreateTodo is the resolver for the createTodo field.
+func (r *mutationResolver) CreateTodo(ctx context.Context, input CreateTodoInput) (*user.User, error) {
+	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+}
+
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, id string) (*user.User, error) {
 	return r.UserRepo.FindByID(ctx, id)
+}
+
+// Todos is the resolver for the todos field.
+func (r *queryResolver) Todos(ctx context.Context) ([]*todo.Todo, error) {
+	panic(fmt.Errorf("not implemented: Todos - todos"))
+}
+
+// User is the resolver for the user field.
+func (r *todoResolver) User(ctx context.Context, obj *todo.Todo) (*user.User, error) {
+	panic(fmt.Errorf("not implemented: User - user"))
 }
 
 // Mutation returns MutationResolver implementation.
@@ -46,5 +62,9 @@ func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Todo returns TodoResolver implementation.
+func (r *Resolver) Todo() TodoResolver { return &todoResolver{r} }
+
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type todoResolver struct{ *Resolver }

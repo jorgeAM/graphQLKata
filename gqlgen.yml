@@ -64,3 +64,9 @@ models:
   
   User:
     model: github.com/jorgeAM/graphqlKata/internal/user.User
+
+  Todo:
+    model: github.com/jorgeAM/graphqlKata/internal/todo.Todo
+    fields:
+      user:
+        resolver: true

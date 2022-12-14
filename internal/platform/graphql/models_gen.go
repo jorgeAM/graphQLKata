@@ -2,6 +2,11 @@
 
 package graphql
 
+type CreateTodoInput struct {
+	Text   string `json:"text"`
+	UserID string `json:"userId"`
+}
+
 type LoginInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
