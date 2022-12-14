@@ -12,12 +12,18 @@ type Client struct {
 	*bun.DB
 }
 
-func NewClient() *Client {
-	dsn := "postgres://postgres:@localhost:5432/graphqlgo?sslmode=disable"
+func NewClient() (*Client, error) {
+	dsn := "postgres://admin:123456@localhost:5432/graphqlgo?sslmode=disable"
 
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
 	db := bun.NewDB(sqldb, pgdialect.New())
 
-	return &Client{db}
+	err := db.Ping()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{db}, nil
 }

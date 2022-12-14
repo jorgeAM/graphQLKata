@@ -8,6 +8,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/jorgeAM/graphqlKata/internal/platform/graphql"
+	"github.com/jorgeAM/graphqlKata/internal/platform/pg"
 )
 
 const defaultPort = "8080"
@@ -18,7 +19,15 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: &graphql.Resolver{}}))
+	db, err := pg.NewClient()
+
+	if err != nil {
+		panic(err)
+	}
+
+	userRepository := pg.NewUserPostgresRepository(db)
+
+	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: &graphql.Resolver{UserRepo: userRepository}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

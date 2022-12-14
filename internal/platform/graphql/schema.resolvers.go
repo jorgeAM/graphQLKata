@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/jorgeAM/graphqlKata/internal/platform/uuid"
 	"github.com/jorgeAM/graphqlKata/internal/user"
 )
 
@@ -17,12 +18,26 @@ func (r *mutationResolver) Login(ctx context.Context, input LoginInput) (*user.U
 
 // SignUp is the resolver for the signUp field.
 func (r *mutationResolver) SignUp(ctx context.Context, input SignUpInput) (*user.User, error) {
-	panic(fmt.Errorf("not implemented: SignUp - signUp"))
+	user := &user.User{
+		ID:       uuid.NewID(),
+		Name:     input.Name,
+		Surname:  input.Surname,
+		Email:    input.Email,
+		Password: input.Password,
+	}
+
+	err := r.UserRepo.Create(ctx, user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 // User is the resolver for the user field.
-func (r *queryResolver) User(ctx context.Context, id *string) (*user.User, error) {
-	panic(fmt.Errorf("not implemented: User - user"))
+func (r *queryResolver) User(ctx context.Context, id string) (*user.User, error) {
+	return r.UserRepo.FindByID(ctx, id)
 }
 
 // Mutation returns MutationResolver implementation.
