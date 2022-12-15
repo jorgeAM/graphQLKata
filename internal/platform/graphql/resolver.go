@@ -8,4 +8,5 @@ import "github.com/jorgeAM/graphqlKata/internal/platform/pg"
 
 type Resolver struct {
 	UserRepo *pg.UserPostgresRepository
+	TodoRepo *pg.TodoPostgresRepository
 }

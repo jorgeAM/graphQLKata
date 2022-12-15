@@ -37,5 +37,5 @@ input CreateTodoInput {
 type Mutation {
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!
-  createTodo(input: CreateTodoInput!): User!
+  createTodo(input: CreateTodoInput!): Todo!
 }

@@ -37,8 +37,21 @@ func (r *mutationResolver) SignUp(ctx context.Context, input SignUpInput) (*user
 }
 
 // CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input CreateTodoInput) (*user.User, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+func (r *mutationResolver) CreateTodo(ctx context.Context, input CreateTodoInput) (*todo.Todo, error) {
+	todo := &todo.Todo{
+		ID:     uuid.NewID(),
+		Text:   input.Text,
+		Done:   true,
+		UserID: input.UserID,
+	}
+
+	err := r.TodoRepo.Create(ctx, todo)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return todo, nil
 }
 
 // User is the resolver for the user field.
@@ -48,7 +61,7 @@ func (r *queryResolver) User(ctx context.Context, id string) (*user.User, error)
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*todo.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+	return r.TodoRepo.FindAll(ctx)
 }
 
 // User is the resolver for the user field.

@@ -75,7 +75,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	Login(ctx context.Context, input LoginInput) (*user.User, error)
 	SignUp(ctx context.Context, input SignUpInput) (*user.User, error)
-	CreateTodo(ctx context.Context, input CreateTodoInput) (*user.User, error)
+	CreateTodo(ctx context.Context, input CreateTodoInput) (*todo.Todo, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context, id string) (*user.User, error)
@@ -321,7 +321,7 @@ input CreateTodoInput {
 type Mutation {
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!
-  createTodo(input: CreateTodoInput!): User!
+  createTodo(input: CreateTodoInput!): Todo!
 }
 `, BuiltIn: false},
 }
@@ -600,9 +600,9 @@ func (ec *executionContext) _Mutation_createTodo(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*user.User)
+	res := resTmp.(*todo.Todo)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋjorgeAMᚋgraphqlKataᚋinternalᚋuserᚐUser(ctx, field.Selections, res)
+	return ec.marshalNTodo2ᚖgithubᚗcomᚋjorgeAMᚋgraphqlKataᚋinternalᚋtodoᚐTodo(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createTodo(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -614,15 +614,15 @@ func (ec *executionContext) fieldContext_Mutation_createTodo(ctx context.Context
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_User_id(ctx, field)
-			case "name":
-				return ec.fieldContext_User_name(ctx, field)
-			case "surname":
-				return ec.fieldContext_User_surname(ctx, field)
-			case "email":
-				return ec.fieldContext_User_email(ctx, field)
+				return ec.fieldContext_Todo_id(ctx, field)
+			case "text":
+				return ec.fieldContext_Todo_text(ctx, field)
+			case "done":
+				return ec.fieldContext_Todo_done(ctx, field)
+			case "user":
+				return ec.fieldContext_Todo_user(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type Todo", field.Name)
 		},
 	}
 	defer func() {
@@ -3780,6 +3780,20 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNTodo2githubᚗcomᚋjorgeAMᚋgraphqlKataᚋinternalᚋtodoᚐTodo(ctx context.Context, sel ast.SelectionSet, v todo.Todo) graphql.Marshaler {
+	return ec._Todo(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTodo2ᚖgithubᚗcomᚋjorgeAMᚋgraphqlKataᚋinternalᚋtodoᚐTodo(ctx context.Context, sel ast.SelectionSet, v *todo.Todo) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Todo(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNUser2githubᚗcomᚋjorgeAMᚋgraphqlKataᚋinternalᚋuserᚐUser(ctx context.Context, sel ast.SelectionSet, v user.User) graphql.Marshaler {

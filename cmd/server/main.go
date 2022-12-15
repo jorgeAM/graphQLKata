@@ -26,8 +26,14 @@ func main() {
 	}
 
 	userRepository := pg.NewUserPostgresRepository(db)
+	todoRepository := pg.NewTodoPostgresRepository(db)
 
-	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: &graphql.Resolver{UserRepo: userRepository}}))
+	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{
+		Resolvers: &graphql.Resolver{
+			UserRepo: userRepository,
+			TodoRepo: todoRepository,
+		},
+	}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
