@@ -6,6 +6,7 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
+	"github.com/uptrace/bun/extra/bundebug"
 )
 
 type Client struct {
@@ -24,6 +25,11 @@ func NewClient() (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	db.AddQueryHook(bundebug.NewQueryHook(
+		bundebug.WithEnabled(true),
+		bundebug.WithVerbose(true),
+	))
 
 	return &Client{db}, nil
 }
