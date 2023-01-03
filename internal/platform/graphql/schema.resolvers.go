@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/jorgeAM/graphqlKata/internal/platform/graphql/dataloader"
 	"github.com/jorgeAM/graphqlKata/internal/platform/uuid"
 	"github.com/jorgeAM/graphqlKata/internal/todo"
 	"github.com/jorgeAM/graphqlKata/internal/user"
@@ -66,7 +67,11 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*todo.Todo, error) {
 
 // User is the resolver for the user field.
 func (r *todoResolver) User(ctx context.Context, obj *todo.Todo) (*user.User, error) {
-	return r.UserRepo.FindByID(ctx, obj.UserID)
+	loaders := dataloader.For(ctx)
+
+	thunk := loaders.UserLoader.Load(ctx, obj.UserID)
+
+	return thunk()
 }
 
 // Mutation returns MutationResolver implementation.

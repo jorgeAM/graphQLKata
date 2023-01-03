@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/jorgeAM/graphqlKata/internal/user"
+	"github.com/uptrace/bun"
 )
 
 type UserPostgresRepository struct {
@@ -33,4 +34,16 @@ func (repo *UserPostgresRepository) FindByID(ctx context.Context, id string) (*u
 	}
 
 	return user, nil
+}
+
+func (repo *UserPostgresRepository) FindByIDs(ctx context.Context, ids []string) ([]*user.User, error) {
+	var users []*user.User
+
+	err := repo.NewSelect().Model(&users).Where("id IN (?)", bun.In(ids)).Scan(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
